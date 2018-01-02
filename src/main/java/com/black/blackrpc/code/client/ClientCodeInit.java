@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.black.blackrpc.code.base.entity.InvokingServiceBase;
+import com.black.blackrpc.code.cache.BeanProxyCache;
 import com.black.blackrpc.code.cache.InvokingServiceCache;
 import com.black.blackrpc.code.cache.NettyConnectCache;
 import com.black.blackrpc.code.cache.ObjectCache;
@@ -58,7 +59,7 @@ public class ClientCodeInit  implements ApplicationListener<ContextRefreshedEven
 		
 		
 		/************创建调用服务代理**************/
-		List<InvokingServiceBase> invokingServiceList =InvokingServiceCache.invokingServiceList;
+		/*List<InvokingServiceBase> invokingServiceList =InvokingServiceCache.invokingServiceList;
 		for(InvokingServiceBase invokingServiceBase:invokingServiceList){
 			Class<?> cls =invokingServiceBase.getCls();
 			Object obj=invokingServiceBase.getBean();
@@ -70,7 +71,7 @@ public class ClientCodeInit  implements ApplicationListener<ContextRefreshedEven
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
-		}
+		}*/
 		/************创建调用服务代理**************/
 		
 		/************初始化netty连接缓存**************/

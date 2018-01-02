@@ -1,7 +1,7 @@
 package com.black.blackrpc.code.spring.listener;
 
-import java.lang.reflect.Field;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -9,20 +9,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.black.blackrpc.code.annotation.InvokingService;
-import com.black.blackrpc.code.annotation.LoadBalanceStrategy;
 import com.black.blackrpc.code.annotation.RegisterService;
 import com.black.blackrpc.code.annotation.RegisterServiceInContext;
 import com.black.blackrpc.code.annotation.SerializationType;
-import com.black.blackrpc.code.annotation.TimeOut;
 import com.black.blackrpc.code.annotation.Weight;
-import com.black.blackrpc.code.base.entity.InvokingServiceBase;
 import com.black.blackrpc.code.base.entity.ProvideServiceBase;
-import com.black.blackrpc.code.cache.InvokingServiceCache;
 import com.black.blackrpc.code.cache.ProvideServiceCache;
-import com.black.blackrpc.code.enums.LoadBalanceStrategyEnum;
 import com.black.blackrpc.code.enums.SerializationTypeEnum;
-import com.black.blackrpc.common.constant.SyncFutureConstant;
 import com.black.blackrpc.common.constant.ZkConstant;
 import com.black.blackrpc.common.util.ListUtil;
 import com.black.blackrpc.common.util.math.Arith;
@@ -105,51 +98,6 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 			}
 			/**监听被标记@RegisterService 注解的类,同时将其加入缓存**/
 			
-			/**监听被标记@InvokingService 属性注解的类,同时将其加入缓存**/
-			InvokingServiceCache.invokingServiceListInit();
-			Map<String, Object> componentBeans_ = event.getApplicationContext().getBeansWithAnnotation(Component.class);
-			for (Object bean : componentBeans_.values()) {
-				Field[] fields= bean.getClass().getDeclaredFields();//获取所有属性
-				if(ListUtil.isNotEmpty(fields)){
-					for(Field field:fields){
-						InvokingService invokingService=field.getAnnotation(InvokingService.class);
-						if(invokingService!=null){
-							SerializationType serializationType = field.getAnnotation(SerializationType.class);
-							TimeOut timeOut = field.getAnnotation(TimeOut.class);
-							LoadBalanceStrategy loadBalanceStrategy = field.getAnnotation(LoadBalanceStrategy.class);
-							InvokingServiceBase invokingServiceBase =new InvokingServiceBase();
-							invokingServiceBase.setBean(bean);
-							invokingServiceBase.setCls(field.getType());
-							invokingServiceBase.setFieldName(field.getName());
-							if (!"".equals(invokingService.value())) {//是否存在别名
-								invokingServiceBase.setServiceName(invokingService.value());
-							}else{
-								invokingServiceBase.setServiceName(field.getType().getName());
-							}
-							if(serializationType==null){//设置默认初始化方式
-								invokingServiceBase.setSerializationType(SerializationTypeEnum.Protostuff);
-							}else{
-								invokingServiceBase.setSerializationType(serializationType.value());
-							}
-							if(timeOut==null){//设置默认初始化方式
-								invokingServiceBase.setTimeOut(SyncFutureConstant.TimeOut);
-							}else{
-								invokingServiceBase.setTimeOut(timeOut.value());
-								if(timeOut.value()>SyncFutureConstant.maxTimeOut){//修改系统内最大的超时时间
-									SyncFutureConstant.maxTimeOut=timeOut.value();
-								}
-							}
-							if(loadBalanceStrategy==null){//负载均衡策略
-								invokingServiceBase.setLoadBalanceStrategy(LoadBalanceStrategyEnum.Polling);
-							}else{
-								invokingServiceBase.setLoadBalanceStrategy(loadBalanceStrategy.value());
-							}
-							InvokingServiceCache.invokingServiceList.add(invokingServiceBase);
-						}
-					}
-				}
-			}
-			/**监听被标记@RegisterService 属性注解的类,同时将其加入缓存**/
 		}
 	}
 }

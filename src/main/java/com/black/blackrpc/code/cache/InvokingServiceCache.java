@@ -1,7 +1,6 @@
 package com.black.blackrpc.code.cache;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.black.blackrpc.code.base.entity.DiscoveryServiceBase;
-import com.black.blackrpc.code.base.entity.InvokingServiceBase;
 import com.black.blackrpc.code.base.entity.RemoteServiceBase;
 import com.black.blackrpc.code.enums.SerializationTypeEnum;
 import com.black.blackrpc.common.constant.ZkConstant;
@@ -27,10 +25,6 @@ public class InvokingServiceCache {
 	 */
 	public static volatile Map<String,DiscoveryServiceBase> discoveryServiceMap =null;
 	/**
-	 * 调用的服务缓存
-	 */
-	public static volatile List<InvokingServiceBase> invokingServiceList =null;
-	/**
 	 * 初始化discoveryServiceMap
 	 * @return
 	 */
@@ -40,16 +34,7 @@ public class InvokingServiceCache {
 		}
 		return true;
 	}
-	/**
-	 * 初始化invokingServiceList
-	 * @return
-	 */
-	public static boolean invokingServiceListInit(){
-		if(invokingServiceList==null){
-			invokingServiceList= Collections.synchronizedList(new ArrayList<InvokingServiceBase>());
-		}
-		return true;
-	}
+
 	/**
 	 * 更新invoking缓存
 	 * @param map

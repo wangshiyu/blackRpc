@@ -8,7 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 /**
  * 服务调用注解
- * 暂时只支持 bean作用域为singleton(单例模式)
  * @author v_wangshiyu
  */
 @Retention(RetentionPolicy.RUNTIME)
