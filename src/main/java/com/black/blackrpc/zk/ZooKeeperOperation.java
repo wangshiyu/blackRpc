@@ -108,7 +108,7 @@ public class ZooKeeperOperation {
     
     /**
      * 同步节点
-     * 这是一个观察者模式
+     * 这是一个通知模式
      * syncNodes会通过级联方式，在每次watcher被触发后，就会再挂一次watcher。完成了一个类似链式触发的功能
      * @param zk
      */
