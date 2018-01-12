@@ -3,8 +3,6 @@ package com.black.blackrpc.code.cache;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.black.blackrpc.code.proxy.JdkMethodProxy;
-
 /**
  * bean代理缓存
  * @author v_wangshiyu

@@ -15,6 +15,9 @@ private String zkAddress;
 @Value("${server.open}")
 private Boolean serverOpen;
 
+@Value("${client.open}")
+private Boolean clientOpen;
+
 @Value("${server.tcp.address}")
 private String serverTcpAddress;
 
@@ -31,6 +34,14 @@ public Boolean getServerOpen() {
 
 public void setServerOpen(Boolean serverOpen) {
 	this.serverOpen = serverOpen;
+}
+
+public Boolean getClientOpen() {
+	return clientOpen;
+}
+
+public void setClientOpen(Boolean clientOpen) {
+	this.clientOpen = clientOpen;
 }
 
 public String getServerTcpAddress() {

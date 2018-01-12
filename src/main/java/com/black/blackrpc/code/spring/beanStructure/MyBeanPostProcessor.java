@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import com.black.blackrpc.code.enums.LoadBalanceStrategyEnum;
 import com.black.blackrpc.code.enums.SerializationTypeEnum;
 import com.black.blackrpc.code.proxy.JdkProxy;
 import com.black.blackrpc.code.service.ServiceCodeInit;
+import com.black.blackrpc.common.configure.BreakRpcConfigure;
 import com.black.blackrpc.common.constant.SyncFutureConstant;
 import com.black.blackrpc.common.constant.ZkConstant;
 import com.black.blackrpc.common.util.ListUtil;
@@ -29,14 +31,17 @@ import com.black.blackrpc.common.util.MapUtil;
  */
 @Component
 public class MyBeanPostProcessor implements BeanPostProcessor {
+	@Autowired
+	private BreakRpcConfigure breakRpcConfigure;
+	
 	private static final Logger log = LoggerFactory.getLogger(ServiceCodeInit.class);
     public MyBeanPostProcessor() {
        super();
-       /************初始化代理缓存**************/
+       /*********初始化代理类缓存********/
        if(MapUtil.isEmpty(BeanProxyCache.beanProxyMap)){
     		BeanProxyCache.beanProxyMapInit();
        }
-	   /************初始化代理缓存**************/
+       /*********初始化代理类缓存********/
        log.info("BeanPostProcessor实现类构造器初始化完成！");         
    }
 
@@ -51,7 +56,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName)
            throws BeansException {
     	Map<String,Object> beanProxyMap= BeanProxyCache.beanProxyMap;
-    	
+    	if(breakRpcConfigure!=null&&breakRpcConfigure.getClientOpen()){
     	Field[] fields= bean.getClass().getDeclaredFields();//获取所有属性
 		if(ListUtil.isNotEmpty(fields)){
 			for(Field field:fields){
@@ -93,7 +98,9 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 				}
 			}
 		}
-    	
+    	}else if(breakRpcConfigure!=null&&!breakRpcConfigure.getClientOpen()){//回收beanProxyMap
+    		BeanProxyCache.beanProxyMap=null;
+    	}
        return bean;
     }
 }

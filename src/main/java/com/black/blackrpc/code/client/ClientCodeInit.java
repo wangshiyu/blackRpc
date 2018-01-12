@@ -1,8 +1,5 @@
 package com.black.blackrpc.code.client;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +8,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.black.blackrpc.code.base.entity.InvokingServiceBase;
-import com.black.blackrpc.code.cache.BeanProxyCache;
-import com.black.blackrpc.code.cache.InvokingServiceCache;
 import com.black.blackrpc.code.cache.NettyConnectCache;
 import com.black.blackrpc.code.cache.ObjectCache;
 import com.black.blackrpc.code.cache.SyncFutureCatch;
-import com.black.blackrpc.code.proxy.JdkProxy;
 import com.black.blackrpc.common.configure.BreakRpcConfigure;
 import com.black.blackrpc.common.util.StringUtil;
 import com.black.blackrpc.zk.ZooKeeperOperation;
@@ -42,6 +35,7 @@ public class ClientCodeInit  implements ApplicationListener<ContextRefreshedEven
      */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+		if(!breakRpcConfigure.getClientOpen()) return;
 		log.info("Client Code Init...");
 		/************连接zookeepre 并同步记录**************/
 		String zkAddress= breakRpcConfigure.getZkAddress();
@@ -57,23 +51,6 @@ public class ClientCodeInit  implements ApplicationListener<ContextRefreshedEven
 		}
 		/************连接zookeepre 并同步记录**************/
 		
-		
-		/************创建调用服务代理**************/
-		/*List<InvokingServiceBase> invokingServiceList =InvokingServiceCache.invokingServiceList;
-		for(InvokingServiceBase invokingServiceBase:invokingServiceList){
-			Class<?> cls =invokingServiceBase.getCls();
-			Object obj=invokingServiceBase.getBean();
-			try {
-				Field field = obj.getClass().getDeclaredField(invokingServiceBase.getFieldName());
-				field.setAccessible(true);
-				field.set(obj,JdkProxy.getInstance(cls,invokingServiceBase.getServiceName(),invokingServiceBase.getSerializationType(),invokingServiceBase.getTimeOut(),invokingServiceBase.getLoadBalanceStrategy()));//注入动态代理
-				field.setAccessible(false);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
-		}*/
-		/************创建调用服务代理**************/
-		
 		/************初始化netty连接缓存**************/
 		NettyConnectCache.tcpConnectCacheInit();
 		/************初始化netty连接缓存**************/
@@ -81,8 +58,7 @@ public class ClientCodeInit  implements ApplicationListener<ContextRefreshedEven
 		/************初始化同步结果缓存**************/
 		SyncFutureCatch.syncFutureMapInit();
 		/************初始化同步结果缓存**************/
-		
-		
+
     	log.info("Client Code Init Success!");
 	}  
 }
