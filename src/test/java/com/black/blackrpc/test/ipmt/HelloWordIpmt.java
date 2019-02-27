@@ -14,11 +14,11 @@ import com.black.blackrpc.test.HelloWord;
 public class HelloWordIpmt implements HelloWord{
 
 	public String one() {
-		return "HelloWord HelloWord HelloWord HelloWord";
+		return "HelloWord one";
 	}
 	
 	public void two() {
-		System.err.println("自己喊 HelloWord HelloWord HelloWord HelloWord");
+		System.err.println("HelloWord two");
 	}
 
 	public String one(String a,int b,List<String> c) {

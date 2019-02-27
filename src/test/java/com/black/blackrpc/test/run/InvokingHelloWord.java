@@ -6,8 +6,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.black.blackrpc.test.invoking.HelloWordInvoking;
-@Component
-@Order(4)
+//@Component
+//@Order(4)
 public class InvokingHelloWord implements ApplicationListener<ContextRefreshedEvent>  {
 	@Autowired
 	private HelloWordInvoking helloWordInvoking;

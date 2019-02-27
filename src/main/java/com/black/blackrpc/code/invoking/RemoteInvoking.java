@@ -59,8 +59,13 @@ public class RemoteInvoking {
 		
 		SyncFuture<RpcResponse> syncFuture =new SyncFuture<RpcResponse>();
 		SyncFutureCatch.syncFutureMap.put(rpcRequest.getRequestId(), syncFuture);
-		RpcResponse rpcResponse= syncFuture.get(timeOut,TimeUnit.MILLISECONDS);
-		SyncFutureCatch.syncFutureMap.remove(rpcRequest.getRequestId());
-		return rpcResponse.getResult();
+		try {
+			RpcResponse rpcResponse= syncFuture.get(timeOut,TimeUnit.MILLISECONDS);
+			return rpcResponse.getResult();
+		}catch (Exception e){
+			throw e;
+		}finally {
+			SyncFutureCatch.syncFutureMap.remove(rpcRequest.getRequestId());
+		}
 	}
 }
