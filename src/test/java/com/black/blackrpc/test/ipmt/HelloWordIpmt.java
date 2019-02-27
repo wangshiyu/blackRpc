@@ -11,26 +11,22 @@ import com.black.blackrpc.test.HelloWord;
 @RegisterService
 @SerializationType(SerializationTypeEnum.Protostuff)
 @Service("helloWordIpmt")
-public class HelloWordIpmt implements HelloWord {
+public class HelloWordIpmt implements HelloWord{
 
-	@Override
-	public String han() {
+	public String one() {
 		return "HelloWord HelloWord HelloWord HelloWord";
 	}
 	
-	@Override
-	public void zijihan() {
+	public void two() {
 		System.err.println("自己喊 HelloWord HelloWord HelloWord HelloWord");
 	}
 
-	@Override
-	public String chang(String a,int b,List<String> c) {
+	public String one(String a,int b,List<String> c) {
 		// TODO Auto-generated method stub
 		return a+b+c.size();
 	}
-	
-	@Override
-	public String chang(String a,double b,List<String> c) {
+
+	public String one(String a,double b,List<String> c) {
 		// TODO Auto-generated method stub
 		return a+b+c.size();
 	}

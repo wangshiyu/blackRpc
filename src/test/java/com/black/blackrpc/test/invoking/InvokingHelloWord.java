@@ -27,10 +27,9 @@ public class InvokingHelloWord implements ApplicationListener<ContextRefreshedEv
 	@TimeOut(60000)
 	private HelloWord helloWord2;
 	
-	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		helloWord.zijihan();
-		System.err.println("helloWord1:"+helloWord1.han());
+		helloWord.one();
+		System.err.println("helloWord1:"+helloWord1.one());
 		//System.err.println("helloWord2:"+helloWord2.han());
 		
 	}

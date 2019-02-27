@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface HelloWord {
 
-	public String han();
+	String one();
 	
-	public void zijihan();
+	void two();
 	
-	public String chang(String a,int b,List<String> c);
+	String one(String a,int b,List<String> c);
 	
-	public String chang(String a,double b,List<String> c);
+	String one(String a,double b,List<String> c);
 }

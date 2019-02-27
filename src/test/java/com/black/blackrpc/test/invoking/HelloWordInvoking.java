@@ -27,8 +27,8 @@ public class HelloWordInvoking {
 	private HelloWord helloWord2;
 	
 	public void run(){
-		helloWord.zijihan();
-		System.err.println("helloWord1:"+helloWord1.han());
+		helloWord.one();
+		System.err.println("helloWord1:"+helloWord1.one());
 		//System.err.println("helloWord2:"+helloWord2.han());
 	}
 
