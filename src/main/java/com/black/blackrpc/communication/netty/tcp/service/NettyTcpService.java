@@ -1,8 +1,5 @@
 package com.black.blackrpc.communication.netty.tcp.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -14,9 +11,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /***
  * netty tcp 服务端
  * @author v_wangshiyu
@@ -26,6 +22,12 @@ public class NettyTcpService {
 	private static final Logger log = LoggerFactory.getLogger(NettyTcpService.class);
 	private String host;
 	private int port;
+
+    public NettyTcpService(String address) throws Exception{
+        String str[] = address.split(":");
+        this.host=str[0];
+        this.port=Integer.valueOf(str[1]);
+    }
 	
 	public NettyTcpService(String host,int port) throws Exception{
 		this.host=host;

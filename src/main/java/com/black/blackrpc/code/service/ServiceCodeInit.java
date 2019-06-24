@@ -43,7 +43,8 @@ public class ServiceCodeInit  implements ApplicationListener<ContextRefreshedEve
     	//有需要发布的服务时开启netty服务端 和服务注册
     	if(MapUtil.isNotEmpty(ProvideServiceCache.provideServiceMap)){
 			try {
-				NettyTcpService nettyTcpService = new NettyTcpService("localhost",8888);
+				String serverTcpAddress = breakRpcConfigure.getServerTcpAddress();
+				NettyTcpService nettyTcpService = new NettyTcpService(StringUtil.isNotEmpty(serverTcpAddress)?serverTcpAddress:"localhost:8888");
 				nettyTcpService.start();
 			} catch (Exception e) {
 				e.printStackTrace();

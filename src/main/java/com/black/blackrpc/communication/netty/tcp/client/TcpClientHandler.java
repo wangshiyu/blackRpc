@@ -13,6 +13,9 @@ import com.black.blackrpc.serialization.SerializationIntegrate;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+/**
+ * 客户端处理器
+ */
 public class TcpClientHandler extends SimpleChannelInboundHandler<Object>{
 	private static final Logger log = LoggerFactory.getLogger(TcpClientHandler.class);
 	@Override

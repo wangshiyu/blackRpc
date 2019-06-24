@@ -46,7 +46,6 @@ public class ZooKeeperOperation {
     public boolean connectServer() {
         try {
             zk = new ZooKeeper(zkAddress, ZkConstant.ZK_SESSION_TIMEOUT, new Watcher() {
-                @Override
                 public void process(WatchedEvent event) {
                     if (event.getState() == Event.KeeperState.SyncConnected) {
                         latch.countDown();
@@ -87,7 +86,7 @@ public class ZooKeeperOperation {
 
     /**
      * 创建node节点
-     * @param zk
+     * @param node
      * @param data
      */
     public boolean createNode(String node, String data) {
@@ -110,13 +109,11 @@ public class ZooKeeperOperation {
      * 同步节点
      * 这是一个通知模式
      * syncNodes会通过级联方式，在每次watcher被触发后，就会再挂一次watcher。完成了一个类似链式触发的功能
-     * @param zk
      */
     @SuppressWarnings("unchecked")
 	public boolean syncNodes() {
         try {
             List<String> nodeList = zk.getChildren(ZkConstant.ZK_RPC_DATA_PATH, new Watcher() {
-                @Override
                 public void process(WatchedEvent event) {
                     if (event.getType() == Event.EventType.NodeChildrenChanged) {
                     	syncNodes();
@@ -146,7 +143,7 @@ public class ZooKeeperOperation {
             	InvokingServiceCache.updataInvokingServiceMap(map);
             }
             return true;
-        } catch (KeeperException | InterruptedException e) {
+        } catch (Exception e) {
         	log.error(e.toString());
             return false;
         }

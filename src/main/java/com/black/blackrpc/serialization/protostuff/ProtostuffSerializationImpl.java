@@ -1,5 +1,6 @@
 package com.black.blackrpc.serialization.protostuff;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,9 @@ import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufIOUtil;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
+import io.protostuff.runtime.DefaultIdStrategy;
+import io.protostuff.runtime.Delegate;
+import io.protostuff.runtime.RuntimeEnv;
 import io.protostuff.runtime.RuntimeSchema;
 /**
  * Protostuff 序列化
@@ -20,6 +24,16 @@ import io.protostuff.runtime.RuntimeSchema;
  *
  */
 public class ProtostuffSerializationImpl implements Serialization {
+
+	private final static Delegate<Timestamp> TIMESTAMP_DELEGATE = new TimestampDelegate();
+
+	private final static DefaultIdStrategy idStrategy         = ((DefaultIdStrategy) RuntimeEnv.ID_STRATEGY);
+
+	private final static ConcurrentHashMap<Class<?>, Schema<?>> cachedSchema       = new ConcurrentHashMap<Class<?>, Schema<?>>();
+
+	static {
+		idStrategy.registerDelegate(TIMESTAMP_DELEGATE);
+	}
 
 	/**
 	 * 序列化
@@ -59,9 +73,7 @@ public class ProtostuffSerializationImpl implements Serialization {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	private static Map<Class<?>, Schema<?>> cachedSchema = new ConcurrentHashMap<>();
+
 
 	private static <T> Schema<T> getSchema(Class<T> cls) {
 	    Schema<T> schema = (Schema<T>) cachedSchema.get(cls);
@@ -84,8 +96,7 @@ public class ProtostuffSerializationImpl implements Serialization {
 		a.add("3333");
 		
 		Serialization serialization =new ProtostuffSerializationImpl();
-		System.err.println(serialization.deserialize(serialization.serialize(rpcResponse), RpcResponse.class));
-		
-		System.err.println(serialization.deserialize(serialization.serialize(rpcRequest), RpcRequest.class));
+		RpcResponse c = serialization.deserialize(serialization.serialize(rpcResponse), RpcResponse.class);
+		System.err.println(c);
 	}
 }

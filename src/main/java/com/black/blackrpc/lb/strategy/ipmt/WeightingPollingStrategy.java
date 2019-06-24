@@ -30,7 +30,8 @@ public class WeightingPollingStrategy implements ClusterStrategy {
             //存放加权后的服务提供者列表
             List<RemoteServiceBase> weightingList = new ArrayList<RemoteServiceBase>();
             for (RemoteServiceBase remoteServiceBase : list) {
-                int weight = (int) (remoteServiceBase.getWeight()*10);//扩大10倍
+                //扩大10倍
+                int weight = (int) (remoteServiceBase.getWeight()*10);
                 for (int i = 0; i < weight; i++) {
                 	weightingList.add(remoteServiceBase);
                 }
